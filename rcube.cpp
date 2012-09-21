@@ -40,6 +40,7 @@ string TEXIMG_CHAR[] = {"72dpi_ascii_reigasou_16x16.png"};
 
 string path_join(int n, ...); // string *
 
+unsigned char AlphaCallback(unsigned char r, unsigned char g, unsigned char b);
 void LoadTextures(void);
 void Initialize(void);
 void Idle(void);
@@ -78,13 +79,21 @@ int main(int argc, char **argv)
   return 0;
 }
 
+unsigned char AlphaCallback(unsigned char r, unsigned char g, unsigned char b)
+{
+  unsigned a = 255 - (r + g + b) / 3;
+  return a & 0x00FF;
+}
+
 void LoadTextures(void)
 {
+  pngSetAlphaCallback(AlphaCallback);
   string *a[] = {&TEXIMG_HINT, &TEXIMG_CHAR[0]};
   for(int i = 0; i < sizeof(a) / sizeof(string *); i++){
     pngInfo pi;
     Gtextures[i] = pngBind(path_join(2, &RESOURCE_DIR, a[i]).c_str(),
-      PNG_NOMIPMAP, PNG_ALPHA, &pi, GL_CLAMP, GL_NEAREST, GL_NEAREST);
+      PNG_NOMIPMAP, PNG_CALLBACK /* PNG_ALPHA */,
+      &pi, GL_CLAMP, GL_NEAREST, GL_NEAREST);
     if(!Gtextures[i]){
       cerr << "Can't load file: " << *a[i];
       exit(1);
@@ -117,8 +126,8 @@ void Display(void)
   glLoadIdentity();
   glColor4f(1.0, 1.0, 1.0, 1.0);
   glEnable(GL_TEXTURE_2D);
-  glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
-//  glBlendFunc(GL_SRC_COLOR, GL_SRC_ALPHA);
+//  glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
+  glBlendFunc(GL_SRC_COLOR, GL_SRC_ALPHA);
 //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
 //  glPushMatrix();
