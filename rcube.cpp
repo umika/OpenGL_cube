@@ -10,10 +10,11 @@
   'GL/glpng.h' 'glpng.lib' from http://openports.se/graphics/glpng
 */
 
-#include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cstdarg>
+#include <cstdlib>
 #include <GL/glpng.h>
 #include <GL/glut.h>
 
@@ -30,9 +31,9 @@ typedef struct _G_Point {
 G_Size Gwsize = {640, 480};
 G_Point Gwpos = {320, 240};
 string Gwtitle = "rcube";
-
 GLuint Gtextures[2] = {0};
-int angle = 0;
+GLuint Gfps = 0;
+int Gangle = 0;
 
 string RESOURCE_DIR = "resource";
 string TEXIMG_FACE = "f%d.png";
@@ -44,6 +45,9 @@ string path_join(int n, ...); // string *
 unsigned char AlphaCallback(unsigned char r, unsigned char g, unsigned char b);
 void LoadTextures(void);
 void Initialize(void);
+void FPS(void);
+void FPSdisplay(void);
+void Timer(int dt);
 void Idle(void);
 void Update(void);
 void Display(void);
@@ -71,6 +75,7 @@ int main(int argc, char **argv)
   glutInitWindowSize(Gwsize.w, Gwsize.h);
   glutInitWindowPosition(Gwpos.x, Gwpos.y);
   glutCreateWindow(Gwtitle.c_str());
+  glutTimerFunc(0, Timer, 0);
   glutIdleFunc(Idle);
   glutDisplayFunc(Display);
   glutReshapeFunc(Reshape);
@@ -105,7 +110,7 @@ void LoadTextures(void)
       cerr << "Can't load file: " << *a[i];
       exit(1);
     }else{
-#if _DEBUG
+#ifdef _DEBUG
       cout << "File: " << *a[i] << endl;
       cout << " Width: " << pri.Width << endl;
       cout << " Height: " << pri.Height << endl;
@@ -157,14 +162,70 @@ void Initialize(void)
   LoadTextures();
 }
 
+void FPS(void)
+{
+  static GLuint frames = 0; // frames averaged over 1000ms
+  static GLuint clk = 0; // milliseconds
+  static GLuint pclk = 0; // milliseconds
+  static GLuint nclk = 0; // milliseconds
+  ++frames;
+  clk = glutGet(GLUT_ELAPSED_TIME); // has limited resolution
+  if(clk < nclk) return;
+  Gfps = frames;
+  pclk = clk;
+  nclk = clk + 1000;
+  frames = 0;
+}
+
+void FPSdisplay(void)
+{
+  ostringstream oss;
+  oss << Gfps << " FPS";
+  string &s = oss.str();
+  glDisable(GL_TEXTURE_2D);
+  glColor4f(1.0, 1.0, 1.0, 1.0);
+  // glWindowPos2f(0.0, 0.0);
+  // glRasterPos2f(0.0, 0.0);
+  glRasterPos3f(-0.9, -0.5, -0.9);
+  for(string::iterator it = s.begin(); it != s.end(); ++it)
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *it);
+  glEnable(GL_TEXTURE_2D);
+  // reverse top / bottom
+  glEnable(GL_TEXTURE_2D);
+//  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//  glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+  glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+  glEnable(GL_BLEND);
+  glBindTexture(GL_TEXTURE_2D, Gtextures[1]);
+  glBegin(GL_QUADS);
+    glTexCoord2f(0.0625, 0.3125); glVertex3f(-0.1, -0.1, 1.1);
+    glTexCoord2f(0.1250, 0.3125); glVertex3f( 0.1, -0.1, 1.1);
+    glTexCoord2f(0.1250, 0.2500); glVertex3f( 0.1,  0.1, 1.1);
+    glTexCoord2f(0.0625, 0.2500); glVertex3f(-0.1,  0.1, 1.1);
+  glEnd();
+  glDisable(GL_BLEND);
+  glDisable(GL_TEXTURE_2D);
+#ifdef _DEBUG
+  cout << s << endl;
+#endif
+}
+
+void Timer(int dt)
+{
+  const int desiredFPS = 60;
+  if(dt > desiredFPS) dt = 0;
+  glutTimerFunc(1000 / desiredFPS, Timer, ++dt);
+  FPS();
+  Update();
+}
+
 void Idle(void)
 {
-  Update();
 }
 
 void Update(void)
 {
-  angle = (angle + 1) % 360;
+  Gangle = (Gangle + 1) % 360;
   glutPostRedisplay();
 }
 
@@ -181,7 +242,7 @@ void Display(void)
   glEnable(GL_BLEND);
 //  glPushMatrix();
     glTranslatef(0.0, 0.0, -5.0);
-    glRotatef(angle, 0, 1, 0);
+    glRotatef(Gangle, 0, 1, 0);
 //  glPopMatrix();
   glBindTexture(GL_TEXTURE_2D, Gtextures[0]);
   glBegin(GL_QUADS);
@@ -201,6 +262,7 @@ void Display(void)
   glEnd();
   glDisable(GL_BLEND);
   glDisable(GL_TEXTURE_2D);
+  FPSdisplay();
   // glFlush(); // glutInitDisplayMode() GLUT_SINGLE ?
   glutSwapBuffers(); // glutInitDisplayMode() GLUT_DOUBLE (double buffering)
 }
