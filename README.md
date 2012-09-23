@@ -12,4 +12,18 @@ Links
 Requires
 --------
 
- * glut-3.7.6
+ * glut-3.7.6 ( http://user.xmission.com/~nate/glut.html )
+ * glpng-1.45 ( http://openports.se/graphics/glpng )
+
+Liquefied Natural GL for C++
+
+ * LNG (web) ( http://umika.github.com/LNG/ )
+ * LNG (git repository) ( https://github.com/umika/LNG/ )
+
+Relations
+---------
+
+ * http://umika.github.com/pyglet_cube/ (web)
+ * https://github.com/umika/pyglet_cube/ (git repository)
+ * http://HatsuneMiku.github.com/HatsuneMiku/ (web)
+ * https://github.com/HatsuneMiku/HatsuneMiku/ (git repository)
