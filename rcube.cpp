@@ -1,8 +1,8 @@
 /*
   rcube.cpp
 
-  > cl rcube.cpp glut32.lib glpng.lib -EHsc -I.
-    -link -LIBPATH:. -NODEFAULTLIB:libc
+  > cl rcube.cpp glut32.lib glpng.lib -EHsc -I. \
+    -link -LIBPATH:. -SUBSYSTEM:console -NODEFAULTLIB:libc
 
   -EHsc destroy local objects on catch any exception
   -NODEFAULTLIB:libc recent VC++ links 'libcmt.lib' instead of 'libc.lib'
