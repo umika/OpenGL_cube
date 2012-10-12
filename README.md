@@ -13,12 +13,16 @@ Requires
 --------
 
  * glut-3.7.6 ( http://user.xmission.com/~nate/glut.html )
- * glpng-1.45 ( http://openports.se/graphics/glpng )
 
 Liquefied Natural GL for C++
 
  * LNG (web) ( http://umika.github.com/LNG/ )
  * LNG (git repository) ( https://github.com/umika/LNG/ )
+
+Optional
+--------
+
+ * glui-2.36 ( http://glui.sourceforge.net/ )
 
 Relations
 ---------
