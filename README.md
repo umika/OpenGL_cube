@@ -12,6 +12,8 @@ Links
 Requires
 --------
 
+ * zlib-1.2.7 ( http://zlib.net/ )
+ * libpng-1.5.13 ( http://www.libpng.org/pub/png/libpng.html )
  * glut-3.7.6 ( http://user.xmission.com/~nate/glut.html )
 
 Liquefied Natural GL for C++
@@ -31,3 +33,5 @@ Relations
  * https://github.com/umika/pyglet_cube/ (git repository)
  * http://HatsuneMiku.github.com/HatsuneMiku/ (web)
  * https://github.com/HatsuneMiku/HatsuneMiku/ (git repository)
+ * http://HatsuneMiku.github.com/cube/ (web)
+ * https://github.com/HatsuneMiku/cube/ (git repository)
