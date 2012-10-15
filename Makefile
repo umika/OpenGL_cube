@@ -35,4 +35,4 @@ $(ODIR)rcube.obj : $(TDIR)$(*B).cpp $(TDIR)$(*B).h $(HEADS)
 clean :
 	del obj\*.obj
 
-all : clean $(OUTPUT)
+all : $(OUTPUT)
