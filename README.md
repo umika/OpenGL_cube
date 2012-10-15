@@ -11,7 +11,7 @@ ScreenShot
 Links
 -----
 
- * http://umika.github.com/OpenGL_cube/wiki (wiki)
+ * https://github.com/umika/OpenGL_cube/wiki (wiki)
  * http://umika.github.com/OpenGL_cube/ (web)
  * https://github.com/umika/OpenGL_cube/ (here)
 
