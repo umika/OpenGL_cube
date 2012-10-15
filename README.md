@@ -3,9 +3,15 @@ OpenGL_cube
 
 OpenGL 3D cube like rubik with Hatsune Miku textures
 
+ScreenShot
+----------
+
+ * https://github.com/umika/OpenGL_cube/blob/master/case00.png?raw=true
+
 Links
 -----
 
+ * http://umika.github.com/OpenGL_cube/wiki (wiki)
  * http://umika.github.com/OpenGL_cube/ (web)
  * https://github.com/umika/OpenGL_cube/ (here)
 
